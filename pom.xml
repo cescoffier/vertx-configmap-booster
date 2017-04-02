@@ -42,6 +42,8 @@
     <vertx-maven-plugin.version>1.0.6</vertx-maven-plugin.version>
     <fabric8.maven.plugin.version>3.2.28</fabric8.maven.plugin.version>
     <vertx.verticle>io.openshift.booster.HttpApplication</vertx.verticle>
+
+    <arquillian-cube.version>1.0.1</arquillian-cube.version>
   </properties>
 
   <dependencyManagement>
@@ -50,6 +52,14 @@
         <groupId>io.vertx</groupId>
         <artifactId>vertx-dependencies</artifactId>
         <version>${vertx.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jboss.arquillian</groupId>
+        <artifactId>arquillian-bom</artifactId>
+        <version>1.1.13.Final</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -141,6 +151,23 @@
       <groupId>com.jayway.awaitility</groupId>
       <artifactId>awaitility</artifactId>
       <version>1.7.0</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-standalone</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.arquillian.cube</groupId>
+      <artifactId>arquillian-cube-kubernetes</artifactId>
+      <version>${arquillian-cube.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.container</groupId>
+      <artifactId>arquillian-container-test-api</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

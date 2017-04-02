@@ -4,6 +4,7 @@ import com.jayway.restassured.RestAssured;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.Route;
@@ -24,14 +25,17 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class OpenShiftTestAssistant {
 
-    private final OpenShiftClient client;
-    private final String project;
+    private OpenShiftClient client;
+    private String project;
     private String applicationName;
     private Map<String, NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean>> created
         = new LinkedHashMap<>();
 
     public OpenShiftTestAssistant() {
-        client = new DefaultKubernetesClient().adapt(OpenShiftClient.class);
+    }
+
+    public void inject(KubernetesClient client) {
+        this.client = client.adapt(OpenShiftClient.class);
         project = client.getNamespace();
     }
 

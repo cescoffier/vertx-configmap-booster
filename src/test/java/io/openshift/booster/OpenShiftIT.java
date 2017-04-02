@@ -2,10 +2,15 @@ package io.openshift.booster;
 
 import com.jayway.restassured.response.Response;
 import io.fabric8.kubernetes.api.model.ConfigMap;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import org.jboss.arquillian.container.test.api.RunAsClient;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 import java.net.MalformedURLException;
@@ -19,18 +24,24 @@ import static org.hamcrest.core.IsEqual.equalTo;
 /**
  * Check the behavior of the application when running in OpenShift.
  */
+@RunWith(Arquillian.class)
+@RunAsClient
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class OpenShiftIT {
 
     private static OpenShiftTestAssistant assistant = new OpenShiftTestAssistant();
 
-    @BeforeClass
-    public static void prepare() throws Exception {
+    @ArquillianResource
+    KubernetesClient client;
+
+    @Before
+    public void prepare() throws Exception {
+        assistant.inject(client);
         assistant.deployApplication();
     }
 
-    @AfterClass
-    public static void cleanup() {
+    @After
+    public void cleanup() {
         assistant.cleanup();
     }
 
